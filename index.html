@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./template-web.js"></script>
+    <script src="./jquery/jquery-3.5.1.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="div"></div>
+    <form id="fo">
+        <input type="text" name="txt" />
+        <input type="text" name="pd" />
+        <button>提交</button>
+    </form>
+    <script type="text/html" id="main">
+        <h2>{{msg}}</h2>
+        <ul>
+            {{each data}}
+            <li>{{$value.bookname}}</li>
+            {{/each}}
+        </ul>
+    </script>
+    <script>
+        // http://www.liulongbin.top:3006/api/getbooks
+        let data = {
+            name: '赵卓',
+            age: 18,
+            arr: ['赵卓', '赵卓', '赵卓', ]
+        }
+
+
+
+        let xhr = new XMLHttpRequest()
+        xhr.timeout = 30
+        xhr.ontimeout = function() {
+            alert('请求超时')
+        }
+        xhr.open('GET', 'http://www.liulongbin.top:3006/api/getbooks')
+        xhr.send()
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                let res = JSON.parse(xhr.response)
+                console.log(res);
+                let r = template('main', res)
+                let v = document.querySelector('.div')
+                v.innerHTML = r
+            }
+        }
+    </script>
+</body>
+
+</html>
